@@ -1,0 +1,5 @@
+enum DBType
+{
+	SQLServer,
+	MSAccess,
+};
