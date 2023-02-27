@@ -128,11 +128,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CompaniesDialog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainDialog.cpp" />
+    <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CompaniesDialog.h" />
     <ClInclude Include="DataTypes.h" />
+    <ClInclude Include="MainFrame.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="MainDialog.h" />
     <ClInclude Include="resource.h" />
