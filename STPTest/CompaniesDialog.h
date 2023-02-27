@@ -10,6 +10,7 @@ class CompaniesDialog : public CDialog
 {
 public:
     enum { IDD = IDD_COMPANIES };
+
     CListCtrl ctrlCompaniesList;
 
     CompaniesDialog(CWnd* parentWnd);
@@ -21,6 +22,9 @@ public:
 
     void LoadCompanies();
 
-    DECLARE_MESSAGE_MAP()
+    void OnOK();
+
+protected:
     afx_msg void OnBnClickedCreateCompany();
+    DECLARE_MESSAGE_MAP()
 };

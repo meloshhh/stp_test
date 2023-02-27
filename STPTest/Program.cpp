@@ -3,23 +3,41 @@
 #include "MainDialog.h"
 #include "CompaniesDialog.h"
 
-Program::Program() : CWinApp(), db(nullptr), activeDialog(nullptr)
+Program::Program() : CWinApp(), db(nullptr), activeDialog(nullptr), frame(nullptr)
 {
 
 }
 
 Program::~Program()
 {
-    if (db)
+    if (db != nullptr)
     {
-        db->Close();
+        if (db->IsOpen())
+        {
+            db->Close();
+        }
         delete db;
+        db = nullptr;
+        OutputDebugString(L"Db connection closed and mem freed\n");
     }
+
+    if (activeDialog != nullptr)
+    {
+        delete activeDialog;
+        activeDialog = nullptr;
+    }
+
+    /*if (frame != nullptr)
+    {
+        delete frame;
+        frame = nullptr;
+    }*/
 }
 
 BOOL Program::InitInstance()
 {
-    m_pMainWnd = new MainFrame;
+    frame = new MainFrame();
+    m_pMainWnd = frame;
     m_pMainWnd->ShowWindow(SW_SHOW);
     m_pMainWnd->UpdateWindow();
 
@@ -33,6 +51,7 @@ BOOL Program::InitInstance()
 
 void Program::SwitchToCompaniesView()
 {
+    activeDialog->EndDialog(IDCANCEL);
     delete activeDialog;
     activeDialog = nullptr;
     activeDialog = new CompaniesDialog(m_pMainWnd);
@@ -58,12 +77,13 @@ bool Program::ConnectToDb(DBType dbType, CString server, CString dbName, CString
         break;
     }
 
-    connStr.Format(L"(ODBC;Driver=%s;Server=%s;Database=%s;UID=%s;PWD=%s)", driverStr, server, dbName, uid, pwd);
+    connStr.Format(L"ODBC;Driver=%s;Server=%s;Database=%s;UID=%s;PWD=%s", driverStr, server, dbName, uid, pwd);
 
-    OutputDebugString(connStr + L"\n");
+    OutputDebugString(connStr);
+    OutputDebugString(L"\n");
 
     BOOL successful = db->Open(NULL, FALSE, FALSE, connStr, TRUE);
-    if (!successful)
+    if (successful == FALSE)
     {
         OutputDebugString(L"Failed to connect to database\n");
         return false;

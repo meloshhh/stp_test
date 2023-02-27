@@ -2,10 +2,6 @@
 #include "Program.h"
 #include "DataTypes.h"
 
-BEGIN_MESSAGE_MAP(CompaniesDialog, CDialog)
-    ON_BN_CLICKED(IDC_CREATE_COMPANY, &CompaniesDialog::OnBnClickedCreateCompany)
-END_MESSAGE_MAP()
-
 CompaniesDialog::CompaniesDialog(CWnd* parentWnd) : CDialog(IDD)
 {
     Create(IDD, parentWnd);
@@ -15,6 +11,7 @@ CompaniesDialog::~CompaniesDialog() {}
 
 void CompaniesDialog::DoDataExchange(CDataExchange* pDX)
 {
+    CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_COMPANIES, ctrlCompaniesList);
 }
 
@@ -23,13 +20,17 @@ BOOL CompaniesDialog::OnInitDialog()
     CDialog::OnInitDialog();
 
     // Setup the list
-    //ListView_SetExtendedListViewStyle(ctrlCompaniesList, LVS_EX_GRIDLINES);
+    ListView_SetExtendedListViewStyle(ctrlCompaniesList, LVS_EX_GRIDLINES);
+
     ctrlCompaniesList.InsertColumn(0, L"ID", LVCFMT_LEFT, -1, 0);
     ctrlCompaniesList.InsertColumn(1, L"Name", LVCFMT_LEFT, -1, 1);
-    ctrlCompaniesList.InsertColumn(1, L"Created at", LVCFMT_LEFT, -1, 1);
-    ctrlCompaniesList.InsertColumn(1, L"HQ address", LVCFMT_LEFT, -1, 1);
+    ctrlCompaniesList.InsertColumn(2, L"Created at", LVCFMT_LEFT, -1, 1);
+    ctrlCompaniesList.InsertColumn(3, L"HQ address", LVCFMT_LEFT, -1, 1);
 
-    LoadCompanies();
+    for (int i = 0;i < ctrlCompaniesList.GetHeaderCtrl()->GetItemCount();++i)
+        ctrlCompaniesList.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+
+    //LoadCompanies();
 
     return TRUE;
 }
@@ -70,7 +71,16 @@ void CompaniesDialog::LoadCompanies()
     }
 }
 
+void CompaniesDialog::OnOK()
+{
+
+}
+
 void CompaniesDialog::OnBnClickedCreateCompany()
 {
     // Open create company dialog as a modal
 }
+
+BEGIN_MESSAGE_MAP(CompaniesDialog, CDialog)
+    ON_BN_CLICKED(IDC_CREATE_COMPANY, &CompaniesDialog::OnBnClickedCreateCompany)
+END_MESSAGE_MAP()

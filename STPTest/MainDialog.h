@@ -18,6 +18,11 @@ public:
 
     void DoDataExchange(CDataExchange* pDX);
 
-    DECLARE_MESSAGE_MAP()
+    BOOL OnInitDialog();
+
+    void OnOK();
+protected:
     afx_msg void OnBnClickedConnect();
+    
+    DECLARE_MESSAGE_MAP()
 };
