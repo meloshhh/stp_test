@@ -14,3 +14,13 @@ public:
 	CString createdAt;
 	CString hqAddress;
 };
+
+struct Office
+{
+public:
+	CString id;
+	CString country;
+	CString city;
+	CString street;
+	CString streetNumber;
+};

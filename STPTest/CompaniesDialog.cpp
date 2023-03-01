@@ -1,6 +1,7 @@
 #include "CompaniesDialog.h"
 #include "Program.h"
 #include "DataTypes.h"
+#include "CreateCompanyDialog.h"
 
 CompaniesDialog::CompaniesDialog(CWnd* parentWnd) : CDialog(IDD)
 {
@@ -12,7 +13,7 @@ CompaniesDialog::~CompaniesDialog() {}
 void CompaniesDialog::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
-    DDX_Control(pDX, IDC_COMPANIES, ctrlCompaniesList);
+    DDX_Control(pDX, IDC_COMPANIES_LIST, ctrlCompaniesList);
 }
 
 BOOL CompaniesDialog::OnInitDialog()
@@ -30,7 +31,7 @@ BOOL CompaniesDialog::OnInitDialog()
     for (int i = 0;i < ctrlCompaniesList.GetHeaderCtrl()->GetItemCount();++i)
         ctrlCompaniesList.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 
-    //LoadCompanies();
+    LoadCompanies();
 
     return TRUE;
 }
@@ -43,8 +44,8 @@ void CompaniesDialog::LoadCompanies()
     Program* program = static_cast<Program*>(AfxGetApp());
     CRecordset recSet(program->db);
     CString query(
-        "SELECT c.id, c.name, c.created_at, o.country, o.city, o.street, o.street_number"
-        "FROM companies c"
+        "SELECT c.id, c.name, c.created_at, o.country, o.city, o.street, o.street_number "
+        "FROM companies c "
         "LEFT JOIN offices o ON c.headquarters_id = o.id"
     );
 
@@ -53,14 +54,14 @@ void CompaniesDialog::LoadCompanies()
     while (!recSet.IsEOF())
     {
         Company company;
-        recSet.GetFieldValue(L"c.id", company.id);
-        recSet.GetFieldValue(L"c.name", company.name);
-        recSet.GetFieldValue(L"c.created_at", company.createdAt);
+        recSet.GetFieldValue(L"id", company.id);
+        recSet.GetFieldValue(L"name", company.name);
+        recSet.GetFieldValue(L"created_at", company.createdAt);
         CString temp;
-        recSet.GetFieldValue(L"o.country", temp);           company.hqAddress += temp;
-        recSet.GetFieldValue(L"o.city", temp);              company.hqAddress += L", " + temp;
-        recSet.GetFieldValue(L"o.street", temp);            company.hqAddress += L", " + temp;
-        recSet.GetFieldValue(L"o.street_number", temp);     company.hqAddress += L", " + temp;
+        recSet.GetFieldValue(L"country", temp);           company.hqAddress += temp;
+        recSet.GetFieldValue(L"city", temp);              company.hqAddress += L", " + temp;
+        recSet.GetFieldValue(L"street", temp);            company.hqAddress += L", " + temp;
+        recSet.GetFieldValue(L"street_number", temp);     company.hqAddress += L", " + temp;
 
         ctrlCompaniesList.InsertItem(0, company.id, 0);
         ctrlCompaniesList.SetItemText(0, 1, company.name);
@@ -78,7 +79,10 @@ void CompaniesDialog::OnOK()
 
 void CompaniesDialog::OnBnClickedCreateCompany()
 {
-    // Open create company dialog as a modal
+    CreateCompanyDialog modal;
+    modal.DoModal();
+
+    LoadCompanies();
 }
 
 BEGIN_MESSAGE_MAP(CompaniesDialog, CDialog)

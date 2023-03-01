@@ -11,12 +11,15 @@ class MainFrame;
 class Program : public CWinApp
 {
 public:
-    Program();
-    ~Program();
-
     CDatabase* db;
     CDialog* activeDialog;
     MainFrame* frame;
+
+
+
+    Program();
+
+    ~Program();
 
     BOOL InitInstance();
 

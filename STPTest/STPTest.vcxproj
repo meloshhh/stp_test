@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CompaniesDialog.cpp" />
+    <ClCompile Include="CreateCompanyDialog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CompaniesDialog.h" />
+    <ClInclude Include="CreateCompanyDialog.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="Program.h" />

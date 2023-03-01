@@ -10,10 +10,12 @@ class CompaniesDialog : public CDialog
 {
 public:
     enum { IDD = IDD_COMPANIES };
-
     CListCtrl ctrlCompaniesList;
 
+
+
     CompaniesDialog(CWnd* parentWnd);
+
     ~CompaniesDialog();
 
     void DoDataExchange(CDataExchange* pDX);
