@@ -1,7 +1,10 @@
 #include "CompaniesDialog.h"
 #include "Program.h"
 #include "DataTypes.h"
-#include "CreateCompanyDialog.h"
+#include "CompanyDialog.h"
+#include "Utilities/Validator.h"
+#include "SimplePopupDialog.h"
+#include "Models/Company.h"
 
 CompaniesDialog::CompaniesDialog(CWnd* parentWnd) : CDialog(IDD)
 {
@@ -21,15 +24,19 @@ BOOL CompaniesDialog::OnInitDialog()
     CDialog::OnInitDialog();
 
     // Setup the list
-    ListView_SetExtendedListViewStyle(ctrlCompaniesList, LVS_EX_GRIDLINES);
+    ListView_SetExtendedListViewStyle(ctrlCompaniesList, LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 
     ctrlCompaniesList.InsertColumn(0, L"ID", LVCFMT_LEFT, -1, 0);
     ctrlCompaniesList.InsertColumn(1, L"Name", LVCFMT_LEFT, -1, 1);
-    ctrlCompaniesList.InsertColumn(2, L"Created at", LVCFMT_LEFT, -1, 1);
-    ctrlCompaniesList.InsertColumn(3, L"HQ address", LVCFMT_LEFT, -1, 1);
+    ctrlCompaniesList.InsertColumn(2, L"Created at", LVCFMT_LEFT, -1, 2);
+    ctrlCompaniesList.InsertColumn(3, L"Headquarters ID", LVCFMT_LEFT, -1, 3);
 
-    for (int i = 0;i < ctrlCompaniesList.GetHeaderCtrl()->GetItemCount();++i)
-        ctrlCompaniesList.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+    CRect rect;
+    ctrlCompaniesList.GetWindowRect(&rect);
+    for (int i = 0; i < ctrlCompaniesList.GetHeaderCtrl()->GetItemCount(); ++i)
+    {
+        ctrlCompaniesList.SetColumnWidth(i, (int)floor(rect.Width() * 0.25f - 1));
+    }
 
     LoadCompanies();
 
@@ -40,35 +47,18 @@ void CompaniesDialog::LoadCompanies()
 {
     ctrlCompaniesList.DeleteAllItems();
 
-    // Retrieve companies from db
-    Program* program = static_cast<Program*>(AfxGetApp());
-    CRecordset recSet(program->db);
     CString query(
-        "SELECT c.id, c.name, c.created_at, o.country, o.city, o.street, o.street_number "
-        "FROM companies c "
-        "LEFT JOIN offices o ON c.headquarters_id = o.id"
+        "SELECT * "
+        "FROM companies"
     );
-
-    recSet.Open(CRecordset::forwardOnly, query, CRecordset::readOnly);
-
-    while (!recSet.IsEOF())
+    Company::ReadAll(companies, query);
+    
+    for (int i = 0; i < companies.GetSize(); ++i)
     {
-        Company company;
-        recSet.GetFieldValue(L"id", company.id);
-        recSet.GetFieldValue(L"name", company.name);
-        recSet.GetFieldValue(L"created_at", company.createdAt);
-        CString temp;
-        recSet.GetFieldValue(L"country", temp);           company.hqAddress += temp;
-        recSet.GetFieldValue(L"city", temp);              company.hqAddress += L", " + temp;
-        recSet.GetFieldValue(L"street", temp);            company.hqAddress += L", " + temp;
-        recSet.GetFieldValue(L"street_number", temp);     company.hqAddress += L", " + temp;
-
-        ctrlCompaniesList.InsertItem(0, company.id, 0);
-        ctrlCompaniesList.SetItemText(0, 1, company.name);
-        ctrlCompaniesList.SetItemText(0, 2, company.createdAt);
-        ctrlCompaniesList.SetItemText(0, 3, company.hqAddress);
-
-        recSet.MoveNext();
+        ctrlCompaniesList.InsertItem(i, companies[i].id, 0);
+        ctrlCompaniesList.SetItemText(i, 1, companies[i].name);
+        ctrlCompaniesList.SetItemText(i, 2, companies[i].createdAt);
+        ctrlCompaniesList.SetItemText(i, 3, companies[i].headquartersId);
     }
 }
 
@@ -79,12 +69,67 @@ void CompaniesDialog::OnOK()
 
 void CompaniesDialog::OnBnClickedCreateCompany()
 {
-    CreateCompanyDialog modal;
+    CompanyDialog modal(nullptr);
     modal.DoModal();
 
     LoadCompanies();
 }
 
+void CompaniesDialog::OnBnClickedEditCompany()
+{
+    int selection = ctrlCompaniesList.GetSelectionMark();
+    if (selection < 0)
+    {
+        DISPLAY_VAL_ERR(L"You must select an item from the list")
+        return;
+    }
+    CompanyDialog modal(&companies[selection]);
+    modal.DoModal();
+
+    LoadCompanies();
+}
+
+void CompaniesDialog::OnBnClickedDeleteCompany()
+{
+    int selection = ctrlCompaniesList.GetSelectionMark();
+    if (selection < 0)
+    {
+        DISPLAY_VAL_ERR(L"You must select an item from the list")
+        return;
+    }
+
+    Program* program = static_cast<Program*>(AfxGetApp());
+    
+    program->db->ExecuteSQL(
+        "DELETE FROM companies WHERE id = " + companies[selection].id
+    );
+
+    LoadCompanies();
+}
+
+void CompaniesDialog::OnBnClickedCompanies()
+{
+    Program* program = static_cast<Program*>(AfxGetApp());
+    program->SwitchToCompaniesView();
+}
+
+void CompaniesDialog::OnBnClickedOffices()
+{
+    Program* program = static_cast<Program*>(AfxGetApp());
+    program->SwitchToOfficesView();
+}
+
+void CompaniesDialog::OnBnClickedEmployees()
+{
+    Program* program = static_cast<Program*>(AfxGetApp());
+    program->SwitchToEmployeesView();
+}
+
 BEGIN_MESSAGE_MAP(CompaniesDialog, CDialog)
     ON_BN_CLICKED(IDC_CREATE_COMPANY, &CompaniesDialog::OnBnClickedCreateCompany)
+    ON_BN_CLICKED(IDC_EDIT_COMPANY, &CompaniesDialog::OnBnClickedEditCompany)
+    ON_BN_CLICKED(IDC_DEL_COMPANY, &CompaniesDialog::OnBnClickedDeleteCompany)
+    ON_BN_CLICKED(IDC_COMPANIES, &CompaniesDialog::OnBnClickedCompanies)
+    ON_BN_CLICKED(IDC_OFFICES, &CompaniesDialog::OnBnClickedOffices)
+    ON_BN_CLICKED(IDC_EMPLOYEES, &CompaniesDialog::OnBnClickedEmployees)
 END_MESSAGE_MAP()

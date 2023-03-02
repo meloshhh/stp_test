@@ -25,5 +25,9 @@ public:
 
     void SwitchToCompaniesView();
 
+    void SwitchToOfficesView();
+
+    void SwitchToEmployeesView();
+
     bool ConnectToDb(DBType dbType, CString server, CString dbName, CString uid, CString pwd);
 };

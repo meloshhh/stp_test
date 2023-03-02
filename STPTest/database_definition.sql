@@ -14,6 +14,8 @@ CREATE TABLE offices (
 	city VARCHAR(255),
 	street VARCHAR(255),
 	street_number VARCHAR(30),
+	company_id BIGINT,
+	FOREIGN KEY (company_id) REFERENCES companies(id),
 );
 
 ALTER TABLE companies

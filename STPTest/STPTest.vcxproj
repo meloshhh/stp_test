@@ -129,20 +129,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CompaniesDialog.cpp" />
-    <ClCompile Include="CreateCompanyDialog.cpp" />
+    <ClCompile Include="Models\Company.cpp" />
+    <ClCompile Include="CompanyDialog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainDialog.cpp" />
     <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="Models\Office.cpp" />
+    <ClCompile Include="OfficesDialog.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="SimplePopupDialog.cpp" />
+    <ClCompile Include="Utilities\Validator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CompaniesDialog.h" />
-    <ClInclude Include="CreateCompanyDialog.h" />
+    <ClInclude Include="Models\Company.h" />
+    <ClInclude Include="CompanyDialog.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="MainFrame.h" />
+    <ClInclude Include="Models\Office.h" />
+    <ClInclude Include="OfficesDialog.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="MainDialog.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SimplePopupDialog.h" />
+    <ClInclude Include="Utilities\Validator.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="STPTest.rc" />

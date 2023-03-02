@@ -4,26 +4,28 @@
 #include "resource.h"
 #include <odbcinst.h>
 #include <afxdb.h>
-#include "DataTypes.h"
+#include "Models/Office.h"
+#include "Models/Company.h"
 
 class CompaniesDialog;
 
-class CreateCompanyDialog : public CDialog
+class CompanyDialog : public CDialog
 {
 public:
-	enum { IDD = IDD_CREATE_COMPANY };
+	enum { IDD = IDD_COMPANY };
 
 	CString valName;
-	CString valHq;
+	CStatic ctrlHqLabel;
 	CComboBox ctrlHq;
 	CArray<Office, Office> offices;
+	Company* company;
 
 
 
 
-	CreateCompanyDialog();
+	CompanyDialog(Company* company);
 
-	~CreateCompanyDialog();
+	~CompanyDialog();
 
 	void DoDataExchange(CDataExchange* pDX);
 
