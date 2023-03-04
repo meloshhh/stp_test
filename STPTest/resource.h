@@ -6,9 +6,10 @@
 #define IDD_TEST2                       103
 #define IDD_MAIN                        105
 #define IDD_COMPANIES                   107
-#define IDD_COMPANY                     109
+#define IDD_OFFICE                      109
 #define IDD_SIMPLE_POPUP                111
 #define IDD_OFFICES                     112
+#define IDD_COMPANY                     114
 #define IDC_SWITCH_TO_2ND               1001
 #define IDC_SWITCH_TO_1ST               1002
 #define IDC_USERNAME                    1003
@@ -32,14 +33,19 @@
 #define IDC_DEL_OFFICE                  1024
 #define IDC_OFFICES_LIST                1025
 #define IDC_HQ_LABEL                    1026
+#define IDC_O_COUNTRY                   1029
+#define IDC_O_CITY                      1030
+#define IDC_O_STREET                    1031
+#define IDC_O_STREET_NO                 1032
+#define IDC_O_COMPANY                   1034
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        114
+#define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40002
-#define _APS_NEXT_CONTROL_VALUE         1027
+#define _APS_NEXT_CONTROL_VALUE         1036
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

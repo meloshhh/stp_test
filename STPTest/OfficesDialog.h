@@ -12,7 +12,9 @@ class OfficesDialog : public CDialog
 {
 public:
 	enum { IDD = IDD_OFFICES };
+
 	CListCtrl ctrlOfficesList;
+
 	CArray<Office, Office> offices;
 
 

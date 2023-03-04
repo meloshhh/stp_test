@@ -15,9 +15,11 @@ public:
 	enum { IDD = IDD_COMPANY };
 
 	CString valName;
+
 	CStatic ctrlHqLabel;
 	CComboBox ctrlHq;
-	CArray<Office, Office> offices;
+
+	CArray<Office,Office> offices;
 	Company* company;
 
 

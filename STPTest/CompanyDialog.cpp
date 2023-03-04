@@ -2,11 +2,10 @@
 #include "Program.h"
 #include "Utilities/Validator.h"
 #include "SimplePopupDialog.h"
-#include "Models/Company.h"
-#include "Models/Office.h"
 
 CompanyDialog::CompanyDialog(Company* company = nullptr) : CDialog(IDD)
 , valName(L"")
+, offices()
 , company(company)
 {
 	//Create(IDD, nullptr);
@@ -34,9 +33,16 @@ BOOL CompanyDialog::OnInitDialog()
 	if (company)
 	{
 		valName = company->name;
-		for (int i = 0; i < offices.GetSize(); i++)
+		if (company->headquartersId.IsEmpty())
 		{
-			if (offices[i].id == company->headquartersId) ctrlHq.SetCurSel(i);
+			ctrlHq.SetCurSel(0);
+		}
+		else
+		{
+			for (int i = 0; i < offices.GetSize(); i++)
+			{
+				if (offices[i].id == company->headquartersId) ctrlHq.SetCurSel(i + 1);
+			}
 		}
 		UpdateData(FALSE);
 	}
@@ -59,8 +65,9 @@ void CompanyDialog::LoadOffices()
 		"WHERE company_id = " + company->id
 	);
 
-	Office::ReadOffices(offices, query);
+	Office::Read(offices, query);
 
+	ctrlHq.AddString(L"/");
 	for (int i = 0; i < offices.GetSize(); ++i)
 	{
 		ctrlHq.AddString(offices[i].id);
@@ -85,7 +92,7 @@ void CompanyDialog::OnOK()
 	else
 	{
 		int selection = ctrlHq.GetCurSel();
-		Company::Update(company, valName, selection >= 0 ? &offices[selection] : nullptr);
+		Company::Update(company, valName, selection >= 1 ? &offices[selection - 1] : nullptr);
 	}
 
 	EndDialog(IDOK);

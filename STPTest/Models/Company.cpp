@@ -1,8 +1,9 @@
 #include "Company.h"
 #include "../Program.h"
 #include "Office.h"
+#include "Model.h"
 
-void Company::ReadAll(CArray<Company, Company>& companies, CString query)
+void Company::Read(CArray<Company, Company>& companies, CString query)
 {
     companies.RemoveAll();
 
@@ -29,7 +30,7 @@ void Company::Create(CString name)
     CString query;
 
     query.Format(
-        L"INSERT INTO companies (name, created_at, headquarters_id) "
+        L"INSERT INTO companies (name, created_at) "
         L"VALUES ('%s', '%s')",
         name,
         CTime::GetCurrentTime().FormatGmt(L"%F %T")
@@ -45,24 +46,27 @@ void Company::Update(Company* company, CString name, Office* hq)
     Program* program = static_cast<Program*>(AfxGetApp());
     CString query;
 
-    company->name = name;
-    company->headquartersId = hq ? hq->id : L"";
-
     query.Format(
         L"UPDATE companies "
-        L"SET name = '%s', headquarters_id = ",
-        company->name
+        L"SET name = %s, headquarters_id = %s "
+        L"WHERE id = %s",
+        Model::StrOrNull(name),
+        Model::NumOrNull(hq != nullptr ? hq->id : L""),
+        Model::NumOrNull(company->id)
     );
 
-    if (company->headquartersId.IsEmpty())
-    {
-        query.Append(L"NULL");
-    }
-    else
-    {
-        query.Append(company->headquartersId);
-    }
-    query.Append(L" WHERE id = " + company->id + L";");
-
     program->db->ExecuteSQL(query);
+}
+
+void Company::Delete(Company* company)
+{
+    Program* program = static_cast<Program*>(AfxGetApp());
+
+    program->db->ExecuteSQL(
+        "DELETE FROM offices WHERE company_id = " + company->id
+    );
+
+    program->db->ExecuteSQL(
+        "DELETE FROM companies WHERE id = " + company->id
+    );
 }

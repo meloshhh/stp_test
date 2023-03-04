@@ -51,7 +51,7 @@ void CompaniesDialog::LoadCompanies()
         "SELECT * "
         "FROM companies"
     );
-    Company::ReadAll(companies, query);
+    Company::Read(companies, query);
     
     for (int i = 0; i < companies.GetSize(); ++i)
     {
@@ -87,6 +87,10 @@ void CompaniesDialog::OnBnClickedEditCompany()
     modal.DoModal();
 
     LoadCompanies();
+
+    ctrlCompaniesList.SetItemState(selection, LVIS_SELECTED, LVIS_SELECTED);
+    ctrlCompaniesList.SetSelectionMark(selection);
+    ctrlCompaniesList.SetFocus();
 }
 
 void CompaniesDialog::OnBnClickedDeleteCompany()
@@ -98,11 +102,7 @@ void CompaniesDialog::OnBnClickedDeleteCompany()
         return;
     }
 
-    Program* program = static_cast<Program*>(AfxGetApp());
-    
-    program->db->ExecuteSQL(
-        "DELETE FROM companies WHERE id = " + companies[selection].id
-    );
+    Company::Delete(&companies[selection]);
 
     LoadCompanies();
 }
