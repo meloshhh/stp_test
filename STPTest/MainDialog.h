@@ -2,8 +2,9 @@
 
 #include <afxwin.h>
 #include "resource.h"
+#include "CDialogExt.h"
 
-class MainDialog : public CDialog
+class MainDialog : public CDialogExt
 {
 public:
     enum { IDD = IDD_MAIN };

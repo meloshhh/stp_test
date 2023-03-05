@@ -4,8 +4,9 @@
 #include "resource.h"
 #include <afxlistctrl.h>
 #include "Models/Company.h"
+#include "CDialogExt.h"
 
-class CompaniesDialog : public CDialog
+class CompaniesDialog : public CDialogExt
 {
 public:
     enum { IDD = IDD_COMPANIES };
@@ -25,8 +26,11 @@ public:
     void LoadCompanies();
 
     void OnOK();
-
+    
+    void ResizeToParent();
 protected:
+    void OptimizeColumnWidths();
+
     afx_msg void OnBnClickedCreateCompany();
     afx_msg void OnBnClickedEditCompany();
     afx_msg void OnBnClickedDeleteCompany();

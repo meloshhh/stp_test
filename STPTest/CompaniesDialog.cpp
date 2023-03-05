@@ -4,7 +4,7 @@
 #include "Utilities/Validator.h"
 #include "SimplePopupDialog.h"
 
-CompaniesDialog::CompaniesDialog(CWnd* parentWnd) : CDialog(IDD),
+CompaniesDialog::CompaniesDialog(CWnd* parentWnd) : CDialogExt(IDD),
 companies()
 {
     Create(IDD, parentWnd);
@@ -30,14 +30,9 @@ BOOL CompaniesDialog::OnInitDialog()
     ctrlCompaniesList.InsertColumn(2, L"Created at", LVCFMT_LEFT, -1, 2);
     ctrlCompaniesList.InsertColumn(3, L"Headquarters ID", LVCFMT_LEFT, -1, 3);
 
-    CRect rect;
-    ctrlCompaniesList.GetWindowRect(&rect);
-    for (int i = 0; i < ctrlCompaniesList.GetHeaderCtrl()->GetItemCount(); ++i)
-    {
-        ctrlCompaniesList.SetColumnWidth(i, (int)floor(rect.Width() * 0.25f - 1));
-    }
-
     LoadCompanies();
+
+    ResizeToParent();
 
     return TRUE;
 }
@@ -64,6 +59,22 @@ void CompaniesDialog::LoadCompanies()
 void CompaniesDialog::OnOK()
 {
 
+}
+
+void CompaniesDialog::ResizeToParent()
+{
+    CDialogExt::ResizeToParent();
+    OptimizeColumnWidths();
+}
+
+void CompaniesDialog::OptimizeColumnWidths()
+{
+    CRect rect;
+    ctrlCompaniesList.GetWindowRect(&rect);
+    for (int i = 0; i < ctrlCompaniesList.GetHeaderCtrl()->GetItemCount(); ++i)
+    {
+        ctrlCompaniesList.SetColumnWidth(i, (int)floor(rect.Width() * 0.25f - 1));
+    }
 }
 
 void CompaniesDialog::OnBnClickedCreateCompany()

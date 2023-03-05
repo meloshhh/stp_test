@@ -5,6 +5,7 @@
 #include <odbcinst.h>
 #include <afxdb.h>
 #include "DataTypes.h"
+#include "CDialogExt.h"
 
 class MainFrame;
 
@@ -12,7 +13,7 @@ class Program : public CWinApp
 {
 public:
     CDatabase* db;
-    CDialog* activeDialog;
+    CDialogExt* activeDialog;
     MainFrame* frame;
 
 

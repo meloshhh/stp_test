@@ -4,9 +4,10 @@
 #include "resource.h"
 #include <afxlistctrl.h>
 #include "Models/Office.h"
+#include "CDialogExt.h"
 
 
-class OfficesDialog : public CDialog
+class OfficesDialog : public CDialogExt
 {
 public:
 	enum { IDD = IDD_OFFICES };
@@ -28,7 +29,11 @@ public:
 	void LoadOffices();
 
 	void OnOK();
+
+	void ResizeToParent();
 protected:
+	void OptimizeColumnWidths();
+
 	afx_msg void OnBnClickedCompanies();
 	afx_msg void OnBnClickedOffices();
 	afx_msg void OnBnClickedEmployees();

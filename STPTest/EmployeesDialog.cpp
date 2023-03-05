@@ -4,7 +4,7 @@
 #include "Utilities/Validator.h"
 #include "SimplePopupDialog.h"
 
-EmployeesDialog::EmployeesDialog(CWnd* parentWnd) : CDialog(IDD),
+EmployeesDialog::EmployeesDialog(CWnd* parentWnd) : CDialogExt(IDD),
 employees()
 {
 	Create(IDD, parentWnd);
@@ -36,14 +36,9 @@ BOOL EmployeesDialog::OnInitDialog()
     ctrlEmployees.InsertColumn(6, L"Office ID", LVCFMT_LEFT, -1, 6);
     ctrlEmployees.InsertColumn(7, L"Assigned head ID", LVCFMT_LEFT, -1, 7);
 
-    CRect rect;
-    ctrlEmployees.GetWindowRect(&rect);
-    for (int i = 0; i < ctrlEmployees.GetHeaderCtrl()->GetItemCount(); ++i)
-    {
-        ctrlEmployees.SetColumnWidth(i, (int)floor(rect.Width() * 0.125f));
-    }
-
     LoadEmployees();
+
+    ResizeToParent();
 
     return TRUE;
 }
@@ -72,6 +67,22 @@ void EmployeesDialog::LoadEmployees()
 
 void EmployeesDialog::OnOK()
 {
+}
+
+void EmployeesDialog::ResizeToParent()
+{
+    CDialogExt::ResizeToParent();
+    OptimizeColumnWidths();
+}
+
+void EmployeesDialog::OptimizeColumnWidths()
+{
+    CRect rect;
+    ctrlEmployees.GetWindowRect(&rect);
+    for (int i = 0; i < ctrlEmployees.GetHeaderCtrl()->GetItemCount(); ++i)
+    {
+        ctrlEmployees.SetColumnWidth(i, (int)floor(rect.Width() * 0.125f) - 1);
+    }
 }
 
 void EmployeesDialog::OnBnClickedCreateEmployee()

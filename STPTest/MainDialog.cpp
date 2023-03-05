@@ -2,7 +2,7 @@
 #include "Program.h"
 #include "DataTypes.h"
 
-MainDialog::MainDialog(CWnd* parentWnd) : CDialog(IDD),
+MainDialog::MainDialog(CWnd* parentWnd) : CDialogExt(IDD),
 valServer(L""),
 valDatabaseName(L""),
 valUsername(L""),
@@ -54,5 +54,5 @@ void MainDialog::OnOK()
 }
 
 BEGIN_MESSAGE_MAP(MainDialog, CDialog)
-    ON_BN_CLICKED(IDC_CONNECT, OnBnClickedConnect)
+    ON_BN_CLICKED(IDC_CONNECT, &MainDialog::OnBnClickedConnect)
 END_MESSAGE_MAP()

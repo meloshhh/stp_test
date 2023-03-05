@@ -46,6 +46,7 @@ BOOL Program::InitInstance()
     if (!activeDialog)
     {
         activeDialog = new MainDialog(m_pMainWnd);
+        activeDialog->ResizeToParent();
     }
 
     return TRUE;

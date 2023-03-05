@@ -4,7 +4,7 @@
 #include "Utilities/Validator.h"
 #include "SimplePopupDialog.h"
 
-OfficesDialog::OfficesDialog(CWnd* parentWnd) : CDialog(IDD),
+OfficesDialog::OfficesDialog(CWnd* parentWnd) : CDialogExt(IDD),
 offices()
 {
 	Create(IDD, parentWnd);
@@ -34,14 +34,9 @@ BOOL OfficesDialog::OnInitDialog()
     ctrlOfficesList.InsertColumn(4, L"Street number", LVCFMT_LEFT, -1, 4);
     ctrlOfficesList.InsertColumn(5, L"Company ID", LVCFMT_LEFT, -1, 5);
 
-    CRect rect;
-    ctrlOfficesList.GetWindowRect(&rect);
-    for (int i = 0; i < ctrlOfficesList.GetHeaderCtrl()->GetItemCount(); ++i)
-    {
-        ctrlOfficesList.SetColumnWidth(i, (int)floor(rect.Width() * 0.166f));
-    }
-
     LoadOffices();
+
+    ResizeToParent();
 
 	return TRUE;
 }
@@ -70,6 +65,22 @@ void OfficesDialog::LoadOffices()
 
 void OfficesDialog::OnOK()
 {
+}
+
+void OfficesDialog::ResizeToParent()
+{
+    CDialogExt::ResizeToParent();
+    OptimizeColumnWidths();
+}
+
+void OfficesDialog::OptimizeColumnWidths()
+{
+    CRect rect;
+    ctrlOfficesList.GetWindowRect(&rect);
+    for (int i = 0; i < ctrlOfficesList.GetHeaderCtrl()->GetItemCount(); ++i)
+    {
+        ctrlOfficesList.SetColumnWidth(i, (int)floor(rect.Width() * 0.166f));
+    }
 }
 
 void OfficesDialog::OnBnClickedCompanies()

@@ -4,8 +4,9 @@
 #include "resource.h"
 #include <afxlistctrl.h>
 #include "Models/Employee.h"
+#include "CDialogExt.h"
 
-class EmployeesDialog : public CDialog
+class EmployeesDialog : public CDialogExt
 {
 public:
 	enum { IDD = IDD_EMPLOYEES };
@@ -26,7 +27,10 @@ public:
 
     void OnOK();
 
+    void ResizeToParent();
 protected:
+    void OptimizeColumnWidths();
+
     afx_msg void OnBnClickedCreateEmployee();
     afx_msg void OnBnClickedEditEmployee();
     afx_msg void OnBnClickedDeleteEmployee();
