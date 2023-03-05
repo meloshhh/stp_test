@@ -16,11 +16,12 @@ public:
 
 	static void Read(CArray<Office,Office>& offices, CString query);
 
-	static void Create(CString country, CString city, CString street, CString streetNo
-		, CString companyId);
+	static void Create(CString country, CString city, CString street, CString streetNo,
+		CString companyId);
 
-	static void Update(Office* office, CString country, CString city, CString street, CString streetNo
-		, CString companyId);
+	static void Update(Office* office,
+		CString country, CString city, CString street, CString streetNo,
+		CString companyId);
 
 	static void Delete(Office* office);
 };

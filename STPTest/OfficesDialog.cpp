@@ -4,8 +4,8 @@
 #include "Utilities/Validator.h"
 #include "SimplePopupDialog.h"
 
-OfficesDialog::OfficesDialog(CWnd* parentWnd) : CDialog(IDD)
-, offices()
+OfficesDialog::OfficesDialog(CWnd* parentWnd) : CDialog(IDD),
+offices()
 {
 	Create(IDD, parentWnd);
 }

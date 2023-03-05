@@ -3,6 +3,7 @@
 #include "MainDialog.h"
 #include "CompaniesDialog.h"
 #include "OfficesDialog.h"
+#include "EmployeesDialog.h"
 
 Program::Program() : CWinApp(), db(nullptr), activeDialog(nullptr), frame(nullptr)
 {
@@ -71,7 +72,7 @@ void Program::SwitchToEmployeesView()
     activeDialog->EndDialog(IDCANCEL);
     delete activeDialog;
     activeDialog = nullptr;
-    //activeDialog = new EmployeesDialog(m_pMainWnd);
+    activeDialog = new EmployeesDialog(m_pMainWnd);
 }
 
 bool Program::ConnectToDb(DBType dbType, CString server, CString dbName, CString uid, CString pwd)

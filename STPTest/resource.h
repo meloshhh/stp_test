@@ -10,6 +10,8 @@
 #define IDD_SIMPLE_POPUP                111
 #define IDD_OFFICES                     112
 #define IDD_COMPANY                     114
+#define IDD_EMPLOYEES                   115
+#define IDD_EMPLOYEE                    116
 #define IDC_SWITCH_TO_2ND               1001
 #define IDC_SWITCH_TO_1ST               1002
 #define IDC_USERNAME                    1003
@@ -38,6 +40,18 @@
 #define IDC_O_STREET                    1031
 #define IDC_O_STREET_NO                 1032
 #define IDC_O_COMPANY                   1034
+#define IDC_EMPLOYEES_LIST              1036
+#define IDC_CREATE_EMPLOYEE             1037
+#define IDC_EDIT_EMPLOYEE               1038
+#define IDC_DEL_EMPLOYEE                1039
+#define IDC_E_FNAME                     1040
+#define IDC_E_LNAME                     1041
+#define IDC_E                           1042
+#define IDC_E_SDATE                     1042
+#define IDC_E_VACDAYS                   1043
+#define IDC_E_AHID                      1044
+#define IDC_E_POS                       1045
+#define IDC_E_OFFICE                    1046
 
 // Next default values for new objects
 // 
@@ -45,7 +59,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        116
 #define _APS_NEXT_COMMAND_VALUE         40002
-#define _APS_NEXT_CONTROL_VALUE         1036
+#define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

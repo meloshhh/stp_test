@@ -33,6 +33,12 @@ BOOL OfficeDialog::OnInitDialog()
 
 	LoadCompanies();
 
+	if (companies.GetSize() == 0)
+	{
+		EndDialog(IDCANCEL);
+		DISPLAY_VAL_ERR(L"You must first create at least 1 company")
+	}
+
 	if (office)
 	{
 		valCountry = office->country;
@@ -65,17 +71,15 @@ void OfficeDialog::LoadCompanies()
 
 	Company::Read(companies, query);
 
-	if (companies.GetSize() == 0)
-	{
-		EndDialog(IDCANCEL);
-		DISPLAY_VAL_ERR(L"You must first create at least 1 company")
-	}
-
 	for (int i = 0; i < companies.GetSize(); ++i)
 	{
 		ctrlCompany.AddString(companies[i].id);
 	}
-	ctrlCompany.SetCurSel(0);
+
+	if (companies.GetSize() > 0)
+	{
+		ctrlCompany.SetCurSel(0);
+	}
 }
 
 void OfficeDialog::OnOK()

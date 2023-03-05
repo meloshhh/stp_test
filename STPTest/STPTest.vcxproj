@@ -129,6 +129,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CompaniesDialog.cpp" />
+    <ClCompile Include="Models\Employee.cpp" />
+    <ClCompile Include="EmployeeDialog.cpp" />
+    <ClCompile Include="EmployeesDialog.cpp" />
     <ClCompile Include="Models\Model.cpp" />
     <ClCompile Include="Models\Company.cpp" />
     <ClCompile Include="CompanyDialog.cpp" />
@@ -144,6 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CompaniesDialog.h" />
+    <ClInclude Include="Models\Employee.h" />
+    <ClInclude Include="EmployeeDialog.h" />
+    <ClInclude Include="EmployeesDialog.h" />
     <ClInclude Include="Models\Model.h" />
     <ClInclude Include="Models\Company.h" />
     <ClInclude Include="CompanyDialog.h" />

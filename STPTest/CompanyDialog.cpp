@@ -3,10 +3,10 @@
 #include "Utilities/Validator.h"
 #include "SimplePopupDialog.h"
 
-CompanyDialog::CompanyDialog(Company* company = nullptr) : CDialog(IDD)
-, valName(L"")
-, offices()
-, company(company)
+CompanyDialog::CompanyDialog(Company* company = nullptr) : CDialog(IDD),
+valName(L""),
+offices(),
+company(company)
 {
 	//Create(IDD, nullptr);
 }

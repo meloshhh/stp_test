@@ -2,11 +2,11 @@
 #include "Program.h"
 #include "DataTypes.h"
 
-MainDialog::MainDialog(CWnd* parentWnd) : CDialog(IDD)
-, valServer(L"")
-, valDatabaseName(L"")
-, valUsername(L"")
-, valPassword(L"")
+MainDialog::MainDialog(CWnd* parentWnd) : CDialog(IDD),
+valServer(L""),
+valDatabaseName(L""),
+valUsername(L""),
+valPassword(L"")
 {
     Create(IDD, parentWnd);
 }

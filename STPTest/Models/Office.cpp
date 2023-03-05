@@ -32,12 +32,12 @@ void Office::Create(CString country, CString city, CString street, CString stree
 
     query.Format(
         L"INSERT INTO offices (country, city, street, street_number, company_id) "
-        L"VALUES (%s, %s, %s, %s, %s)"
-        , Model::StrOrNull(country)
-        , Model::StrOrNull(city)
-        , Model::StrOrNull(street)
-        , Model::StrOrNull(streetNo)
-        , companyId
+        L"VALUES (%s, %s, %s, %s, %s)",
+        Model::StrOrNull(country),
+        Model::StrOrNull(city),
+        Model::StrOrNull(street),
+        Model::StrOrNull(streetNo),
+        Model::NumOrNull(companyId)
     );
 
     program->db->ExecuteSQL(query);
@@ -61,11 +61,11 @@ void Office::Update(Office* office, CString country, CString city, CString stree
         L"UPDATE offices "
         L"SET country = %s, city = %s, street = %s, street_number = %s, company_id = %s "
         L"WHERE id = %s",
-        Model::StrOrNull(country), 
+        Model::StrOrNull(country),
         Model::StrOrNull(city),
         Model::StrOrNull(street),
         Model::StrOrNull(streetNo),
-        companyId,
+        Model::NumOrNull(companyId),
         office->id
     );
 

@@ -1,12 +1,11 @@
 #include "CompaniesDialog.h"
 #include "Program.h"
-#include "DataTypes.h"
 #include "CompanyDialog.h"
 #include "Utilities/Validator.h"
 #include "SimplePopupDialog.h"
-#include "Models/Company.h"
 
-CompaniesDialog::CompaniesDialog(CWnd* parentWnd) : CDialog(IDD)
+CompaniesDialog::CompaniesDialog(CWnd* parentWnd) : CDialog(IDD),
+companies()
 {
     Create(IDD, parentWnd);
 }

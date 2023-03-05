@@ -5,9 +5,6 @@
 #include "Models/Company.h"
 #include "Models/Office.h"
 
-class Company;
-class Office;
-
 class OfficeDialog : public CDialog
 {
 public:

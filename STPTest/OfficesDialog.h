@@ -2,8 +2,6 @@
 
 #include <afxwin.h>
 #include "resource.h"
-#include <odbcinst.h>
-#include <afxdb.h>
 #include <afxlistctrl.h>
 #include "Models/Office.h"
 
