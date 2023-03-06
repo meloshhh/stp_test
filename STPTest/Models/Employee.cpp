@@ -16,7 +16,7 @@ CString Employee::GetDescriptiveStr()
 
     ret.Format(
         L"%s, %s, %s, %s",
-        id, firstName, lastName, position
+        id, firstName, lastName, PosIntToStr(StrToInt(position))
     );
     return ret;
 }

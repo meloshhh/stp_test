@@ -73,7 +73,7 @@ void OfficeDialog::LoadCompanies()
 
 	for (int i = 0; i < companies.GetSize(); ++i)
 	{
-		ctrlCompany.AddString(companies[i].id);
+		ctrlCompany.AddString(companies[i].GetDescriptiveStr());
 	}
 
 	if (companies.GetSize() > 0)

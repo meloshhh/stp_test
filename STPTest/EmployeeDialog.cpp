@@ -40,6 +40,7 @@ BOOL EmployeeDialog::OnInitDialog()
 	{
 		EndDialog(IDCANCEL);
 		DISPLAY_VAL_ERR(L"You must first create at least 1 office")
+		return TRUE;
 	}
 
 	ctrlPosition.AddString(L"Head chief");
