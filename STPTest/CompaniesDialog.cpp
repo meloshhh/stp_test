@@ -28,7 +28,7 @@ BOOL CompaniesDialog::OnInitDialog()
     ctrlCompaniesList.InsertColumn(0, L"ID", LVCFMT_LEFT, -1, 0);
     ctrlCompaniesList.InsertColumn(1, L"Name", LVCFMT_LEFT, -1, 1);
     ctrlCompaniesList.InsertColumn(2, L"Created at", LVCFMT_LEFT, -1, 2);
-    ctrlCompaniesList.InsertColumn(3, L"Headquarters ID", LVCFMT_LEFT, -1, 3);
+    ctrlCompaniesList.InsertColumn(3, L"Headquarters", LVCFMT_LEFT, -1, 3);
 
     LoadCompanies();
 
@@ -46,13 +46,15 @@ void CompaniesDialog::LoadCompanies()
         "FROM companies"
     );
     Company::Read(companies, query);
+    Company::LoadHeadquarters(companies);
     
     for (int i = 0; i < companies.GetSize(); ++i)
     {
         ctrlCompaniesList.InsertItem(i, companies[i].id, 0);
         ctrlCompaniesList.SetItemText(i, 1, companies[i].name);
         ctrlCompaniesList.SetItemText(i, 2, companies[i].createdAt);
-        ctrlCompaniesList.SetItemText(i, 3, companies[i].headquartersId);
+        ctrlCompaniesList.SetItemText(i, 3, companies[i].headquarters ? 
+            companies[i].headquarters->GetDescriptiveStr() : L"");
     }
 }
 

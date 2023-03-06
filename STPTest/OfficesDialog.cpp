@@ -32,7 +32,7 @@ BOOL OfficesDialog::OnInitDialog()
     ctrlOfficesList.InsertColumn(2, L"City", LVCFMT_LEFT, -1, 2);
     ctrlOfficesList.InsertColumn(3, L"Street", LVCFMT_LEFT, -1, 3);
     ctrlOfficesList.InsertColumn(4, L"Street number", LVCFMT_LEFT, -1, 4);
-    ctrlOfficesList.InsertColumn(5, L"Company ID", LVCFMT_LEFT, -1, 5);
+    ctrlOfficesList.InsertColumn(5, L"Company", LVCFMT_LEFT, -1, 5);
 
     LoadOffices();
 
@@ -51,6 +51,7 @@ void OfficesDialog::LoadOffices()
     );
 
     Office::Read(offices, query);
+    Office::LoadCompany(offices);
 
     for (int i = 0; i < offices.GetSize(); ++i)
     {
@@ -59,7 +60,8 @@ void OfficesDialog::LoadOffices()
         ctrlOfficesList.SetItemText(i, 2, offices[i].city);
         ctrlOfficesList.SetItemText(i, 3, offices[i].street);
         ctrlOfficesList.SetItemText(i, 4, offices[i].streetNumber);
-        ctrlOfficesList.SetItemText(i, 5, offices[i].companyId);
+        ctrlOfficesList.SetItemText(i, 5, offices[i].company ?
+            offices[i].company->GetDescriptiveStr() : L"");
     }
 }
 

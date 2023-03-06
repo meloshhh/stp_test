@@ -3,6 +3,23 @@
 #include "Office.h"
 #include "Model.h"
 
+CString Company::GetDescriptiveStr()
+{
+    CString ret{};
+    if (id.IsEmpty()) return ret;
+
+    ret.Format(
+        L"%s, %s",
+        id, name
+    );
+    return ret;
+}
+
+Company::~Company()
+{
+    if (headquarters) delete headquarters;
+}
+
 void Company::Read(CArray<Company, Company>& companies, CString query)
 {
     companies.RemoveAll();
@@ -69,4 +86,47 @@ void Company::Delete(Company* company)
     program->db->ExecuteSQL(
         "DELETE FROM companies WHERE id = " + company->id
     );
+}
+
+void Company::LoadHeadquarters(CArray<Company, Company>& companies)
+{
+    CString query;
+    query.Format(
+        L"SELECT * FROM offices "
+        L"WHERE id IN (%s)",
+        PluckHqIds(companies)
+    );
+    if (PluckHqIds(companies).IsEmpty())
+    {
+        return;
+    }
+
+    CArray<Office, Office> offices;
+    Office::Read(offices, query);
+
+    for (int i = 0; i < companies.GetSize(); ++i)
+    {
+        for (int j = 0; j < offices.GetSize(); j++)
+        {
+            if (offices[j].id == companies[i].headquartersId)
+            {
+                companies[i].headquarters = new Office(offices[j]);
+                break;
+            }
+        }
+    }
+}
+
+CString Company::PluckHqIds(CArray<Company, Company>& companies)
+{
+    CString ret;
+    int hits = 0;
+    for (int i = 0; i < companies.GetSize(); ++i)
+    {
+        if (companies[i].headquartersId.IsEmpty()) continue;
+        if (hits > 0)	ret.Append(L",");
+        ret.Append(companies[i].headquartersId);
+        ++hits;
+    }
+    return ret;
 }

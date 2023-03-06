@@ -33,8 +33,8 @@ BOOL EmployeesDialog::OnInitDialog()
     ctrlEmployees.InsertColumn(3, L"Starting date", LVCFMT_LEFT, -1, 3);
     ctrlEmployees.InsertColumn(4, L"Vacation days", LVCFMT_LEFT, -1, 4);
     ctrlEmployees.InsertColumn(5, L"Position", LVCFMT_LEFT, -1, 5);
-    ctrlEmployees.InsertColumn(6, L"Office ID", LVCFMT_LEFT, -1, 6);
-    ctrlEmployees.InsertColumn(7, L"Assigned head ID", LVCFMT_LEFT, -1, 7);
+    ctrlEmployees.InsertColumn(6, L"Office", LVCFMT_LEFT, -1, 6);
+    ctrlEmployees.InsertColumn(7, L"Assigned head", LVCFMT_LEFT, -1, 7);
 
     LoadEmployees();
 
@@ -51,6 +51,8 @@ void EmployeesDialog::LoadEmployees()
         "SELECT * FROM employees"
     );
     Employee::Read(employees, query);
+    Employee::LoadOffice(employees);
+    Employee::LoadHeadChief(employees);
 
     for (int i = 0; i < employees.GetSize(); ++i)
     {
@@ -60,8 +62,8 @@ void EmployeesDialog::LoadEmployees()
         ctrlEmployees.SetItemText(i, 3, employees[i].startingDate);
         ctrlEmployees.SetItemText(i, 4, employees[i].vacationDays);
         ctrlEmployees.SetItemText(i, 5, Employee::PosIntToStr(StrToInt(employees[i].position)));
-        ctrlEmployees.SetItemText(i, 6, employees[i].officeId);
-        ctrlEmployees.SetItemText(i, 7, employees[i].assignedHeadId);
+        ctrlEmployees.SetItemText(i, 6, employees[i].office ? employees[i].office->GetDescriptiveStr() : L"");
+        ctrlEmployees.SetItemText(i, 7, employees[i].headChief ? employees[i].headChief->GetDescriptiveStr() : L"");
     }
 }
 

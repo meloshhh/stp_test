@@ -1,6 +1,25 @@
 #include "Employee.h"
 #include "../Program.h"
 #include "Model.h"
+#include "Office.h"
+
+Employee::~Employee()
+{
+    if (office) delete office;
+    if (headChief) delete headChief;
+}
+
+CString Employee::GetDescriptiveStr()
+{
+    CString ret{};
+    if (id.IsEmpty()) return ret;
+
+    ret.Format(
+        L"%s, %s, %s, %s",
+        id, firstName, lastName, position
+    );
+    return ret;
+}
 
 void Employee::Read(CArray<Employee, Employee>& employees, CString query)
 {
@@ -104,4 +123,87 @@ CString Employee::PosIntToStr(int pos)
     default:
         return CString(L"");
     }
+}
+
+void Employee::LoadOffice(CArray<Employee, Employee>& employees)
+{
+    CString query;
+    query.Format(
+        L"SELECT * FROM offices "
+        L"WHERE id IN (%s)",
+        PluckOfficeIds(employees)
+    );
+    if (PluckOfficeIds(employees).IsEmpty())
+    {
+        return;
+    }
+
+    CArray<Office, Office> offices;
+    Office::Read(offices, query);
+
+    for (int i = 0; i < employees.GetSize(); ++i)
+    {
+        for (int j = 0; j < offices.GetSize(); j++)
+        {
+            if (offices[j].id == employees[i].officeId)
+            {
+                employees[i].office = new Office(offices[j]);
+                break;
+            }
+        }
+    }
+}
+
+void Employee::LoadHeadChief(CArray<Employee, Employee>& employees)
+{
+    CString query;
+    query.Format(
+        L"SELECT * FROM employees "
+        L"WHERE id IN (%s)",
+        PluckHeadChiefIds(employees)
+    );
+    if (PluckHeadChiefIds(employees).IsEmpty())
+    {
+        return;
+    }
+
+    CArray<Employee, Employee> chiefs;
+    Employee::Read(chiefs, query);
+
+    for (int i = 0; i < employees.GetSize(); ++i)
+    {
+        for (int j = 0; j < chiefs.GetSize(); j++)
+        {
+            if (chiefs[j].id == employees[i].assignedHeadId)
+            {
+                employees[i].headChief = new Employee(chiefs[j]);
+                break;
+            }
+        }
+    }
+}
+
+CString Employee::PluckOfficeIds(CArray<Employee, Employee>& employees)
+{
+    CString ret;
+    for (int i = 0; i < employees.GetSize(); ++i)
+    {
+        if (i > 0)	ret.Append(L",");
+        ret.Append(employees[i].officeId);
+    }
+    return ret;
+}
+
+CString Employee::PluckHeadChiefIds(CArray<Employee, Employee>& employees)
+{
+    CString ret;
+    int hits = 0;
+    for (int i = 0; i < employees.GetSize(); ++i)
+    {
+        if (employees[i].assignedHeadId.IsEmpty()) continue;
+        if (hits > 0)	ret.Append(L",");
+        ret.Append(employees[i].assignedHeadId);
+        ++hits;
+    }
+    return ret;
 }

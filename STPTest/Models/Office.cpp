@@ -1,6 +1,24 @@
 #include "Office.h"
 #include "../Program.h"
 #include "Model.h"
+#include "Company.h"
+
+Office::~Office()
+{
+    if (company) delete company;
+}
+
+CString Office::GetDescriptiveStr()
+{
+    CString ret{};
+    if (id.IsEmpty()) return ret;
+
+    ret.Format(
+        L"%s, %s, %s, %s, %s",
+        id, country, city, street, streetNumber
+    );
+    return ret;
+}
 
 void Office::Read(CArray<Office,Office>& offices, CString query)
 {
@@ -85,4 +103,44 @@ void Office::Delete(Office* office)
     program->db->ExecuteSQL(
         L"DELETE FROM offices WHERE id = " + office->id
     );
+}
+
+void Office::LoadCompany(CArray<Office, Office>& offices)
+{
+    CString query;
+    query.Format(
+        L"SELECT * FROM companies "
+        L"WHERE id IN (%s)",
+        PluckCompanyIds(offices)
+    );
+    if (PluckCompanyIds(offices).IsEmpty())
+    {
+        return;
+    }
+
+    CArray<Company, Company> companies;
+    Company::Read(companies, query);
+
+    for (int i = 0; i < offices.GetSize(); ++i)
+    {
+        for (int j = 0; j < companies.GetSize(); j++)
+        {
+            if (companies[j].id == offices[i].companyId)
+            {
+                offices[i].company = new Company(companies[j]);
+                break;
+            }
+        }
+    }
+}
+
+CString Office::PluckCompanyIds(CArray<Office, Office>& offices)
+{
+    CString ret{};
+    for (int i = 0; i < offices.GetSize(); i++)
+    {
+        if (i > 0)	ret.Append(L",");
+        ret.Append(offices[i].companyId);
+    }
+    return ret;
 }

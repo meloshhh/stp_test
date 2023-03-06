@@ -70,7 +70,7 @@ void CompanyDialog::LoadOffices()
 	ctrlHq.AddString(L"/");
 	for (int i = 0; i < offices.GetSize(); ++i)
 	{
-		ctrlHq.AddString(offices[i].id);
+		ctrlHq.AddString(offices[i].GetDescriptiveStr());
 	}
 }
 

@@ -89,7 +89,7 @@ void EmployeeDialog::LoadOffices()
 
 	for (int i = 0; i < offices.GetSize(); ++i)
 	{
-		ctrlOffice.AddString(offices[i].id);
+		ctrlOffice.AddString(offices[i].GetDescriptiveStr());
 	}
 
 	if (offices.GetSize() > 0)
@@ -112,7 +112,7 @@ void EmployeeDialog::LoadHeadChiefs(CString officeId)
 	ctrlAssignedHeadId.AddString(L"/");
 	for (int i = 0; i < headChiefs.GetSize(); ++i)
 	{
-		ctrlAssignedHeadId.AddString(headChiefs[i].id);
+		ctrlAssignedHeadId.AddString(headChiefs[i].GetDescriptiveStr());
 	}
 	ctrlAssignedHeadId.SetCurSel(0);
 }
