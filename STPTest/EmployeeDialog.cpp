@@ -48,7 +48,7 @@ BOOL EmployeeDialog::OnInitDialog()
 	ctrlPosition.AddString(L"Junior");
 	ctrlPosition.SetCurSel(2);
 
-	LoadHeadChiefs(offices[0].id);
+	LoadHeadChiefs(employee ? employee->officeId : offices[0].id);
 
 
 	if (employee)
